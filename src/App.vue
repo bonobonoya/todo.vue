@@ -20,7 +20,7 @@
     <v-toolbar color="primary" dark fixed app>
       <!-- <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon> -->
       <v-toolbar-title>Todo Main</v-toolbar-title>
-       <!-- <v-tabs
+       <v-tabs
         slot="extension"
         v-model="tab"
         color="primary"
@@ -33,7 +33,7 @@
           :href="`#tab-${item}`"
         >{{ item }}
         </v-tab>
-      </v-tabs> -->
+      </v-tabs>
     </v-toolbar>
 
     <v-content>
