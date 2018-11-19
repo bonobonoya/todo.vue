@@ -25,18 +25,16 @@
           </template>
         </v-list> -->
 
-        <!-- <v-tabs-items v-model="tab">
+        <v-tabs-items v-model="tab">
           <v-tab-item
-            v-for="i in 2"
-            :id="tab"
-            :key="'tab-content-' + i"
+            v-for="item in tabItems"
+            :id="'tab-' + item"
+            :key="'tab-content-' + item"
           >
-          </v-tab-item> -->
             <v-flex xs12 lg5>
               <v-expansion-panel>
                 <v-expansion-panel-content
-                  v-for="(task, index) in tasksList"
-
+                  v-for="(task, index) in showList"
                   :key="'panel-' + index"
                   ripple
                 >
@@ -65,12 +63,8 @@
                 </v-expansion-panel-content>
               </v-expansion-panel>
             </v-flex>
-          </v-tabs-items>
-
-
-
-
-
+          </v-tab-item>
+        </v-tabs-items>
       </v-flex>
     </v-layout>
   </v-container>
@@ -78,7 +72,7 @@
 
 <script>
 export default {
-  props: ['tab'],
+  props: ['tab', 'tabItems'],
   data() {
     return {
       tasks: [{
@@ -105,7 +99,8 @@ export default {
         task: 'test5',
         date: '2017-09-03',
         status: 'task'
-      }]
+      }],
+      showList: null
     }
   },
   computed: {
@@ -118,6 +113,11 @@ export default {
       return this.tasks.filter(function (obj) {
         return obj.status === 'completed'
       })
+    }
+  },
+  watch: {
+    tab: function () {
+      this.showList = this.tab === 'tab-todos' ? this.tasksList : this.completedList
     }
   }
 }

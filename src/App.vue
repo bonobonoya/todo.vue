@@ -28,7 +28,7 @@
       >
         <v-tabs-slider color="white"></v-tabs-slider>
 
-        <v-tab v-for="item in items"
+        <v-tab v-for="item in tabItems"
           :key="item"
           :href="`#tab-${item}`"
         >{{ item }}
@@ -37,7 +37,7 @@
     </v-toolbar>
 
     <v-content>
-      <show-core :tab="tab"></show-core>
+      <show-core :tab="tab" :tabItems="tabItems"></show-core>
       <add-core></add-core>
     </v-content>
   </v-app>
@@ -56,9 +56,9 @@ export default {
     return {
       // drawer: null,
       tab: null,
-      items: [
-        'Todos',
-        'Completed'
+      tabItems: [
+        'todos',
+        'completed'
       ]
     }
   }
