@@ -26,15 +26,47 @@
         </v-list> -->
 
         <v-tabs-items v-model="tab">
-          <v-tab-item
-            v-for="item in tabItems"
-            :id="'tab-' + item"
-            :key="'tab-content-' + item"
-          >
-            <v-flex xs12 lg5>
+          <v-flex xs12 lg5>
+            <v-tab-item id="tab-todos">
+              <v-expansion-panel v-model="panel" focusable>
+                <v-expansion-panel-content
+                  v-for="(task, index) in tasksList"
+                  :key="'panel-' + index"
+                >
+                  <div slot="header">
+                    <v-layout justify-center align-center>
+                      <span class="display-1 font-weight-medium">{{ task.task }}</span>
+                      <v-spacer></v-spacer>
+                      <span class="subheading grey--text pr-4">
+                        {{ task.date }}
+                      </span>
+                    </v-layout>
+                  </div>
+                  <v-card class="grey lighten-3">
+                    <v-layout align-center>
+                      <v-btn
+                        color="success"
+                        @click="tasksList[index].status = 'completed'; panel = null"
+                        block
+                        depressed
+                      >
+                        <v-icon>done</v-icon>
+                      </v-btn>
+                      <v-btn color="primary" block depressed>
+                        <v-icon>create</v-icon>
+                      </v-btn>
+                      <v-btn color="error" block depressed>
+                        <v-icon>delete_forever</v-icon>
+                      </v-btn>
+                    </v-layout>
+                  </v-card>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+            </v-tab-item>
+            <v-tab-item id="tab-completed">
               <v-expansion-panel>
                 <v-expansion-panel-content
-                  v-for="(task, index) in showList"
+                  v-for="(task, index) in completedList"
                   :key="'panel-' + index"
                   ripple
                 >
@@ -49,8 +81,8 @@
                   </div>
                   <v-card class="grey lighten-3">
                     <v-layout align-center>
-                      <v-btn color="success" block depressed>
-                        <v-icon>done</v-icon>
+                      <v-btn color="warning" block depressed>
+                        <v-icon>restore</v-icon>
                       </v-btn>
                       <v-btn color="primary" block depressed>
                         <v-icon>create</v-icon>
@@ -62,8 +94,8 @@
                   </v-card>
                 </v-expansion-panel-content>
               </v-expansion-panel>
-            </v-flex>
-          </v-tab-item>
+            </v-tab-item>
+          </v-flex>
         </v-tabs-items>
       </v-flex>
     </v-layout>
@@ -75,6 +107,7 @@ export default {
   props: ['tab', 'tabItems'],
   data() {
     return {
+      panel: [],
       tasks: [{
         task: 'test1',
         date: '2018-11-15',
@@ -99,8 +132,7 @@ export default {
         task: 'test5',
         date: '2017-09-03',
         status: 'task'
-      }],
-      showList: null
+      }]
     }
   },
   computed: {
@@ -113,11 +145,6 @@ export default {
       return this.tasks.filter(function (obj) {
         return obj.status === 'completed'
       })
-    }
-  },
-  watch: {
-    tab: function () {
-      this.showList = this.tab === 'tab-todos' ? this.tasksList : this.completedList
     }
   }
 }
