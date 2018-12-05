@@ -4,13 +4,13 @@
       <!-- add fab button -->
       <v-slide-y-reverse-transition>
         <v-btn
-          v-show="!sheet"
+          v-show="(!sheet) && fab"
           color="primary"
           fab
           bottom
           left
           fixed
-          @click="sheet = !sheet"
+          @click="sheet = true"
         >
           <v-icon>add</v-icon>
         </v-btn>
@@ -22,63 +22,46 @@
         v-model="sheet"
         hide-overlay
       >
-
-        <!-- text field -->
-        <v-text-field
-          v-model="task"
-          placeholder="Add task"
-          solo
-          hide-details
-        >
-
-          <!-- date picker on dialog -->
-          <template slot="append">
-            <v-dialog
-              v-model="dialog"
-              full-width
-              width="290px"
-            >
-              <v-btn slot="activator" icon>
-                <v-icon :style="{color: date ? this.$vuetify.theme.primary : 'gray'}">today</v-icon>
-              </v-btn>
-              <v-date-picker
-                v-model="date"
-                @input="dialog = false"
-                no-title
-              >
-                <v-spacer></v-spacer>
-                <v-btn flat color="primary" @click="date = null; dialog = false;">Reset</v-btn>
-              </v-date-picker>
-            </v-dialog>
-          </template>
-
-          <!-- add button -->
-          <template slot="append">
-            <v-btn icon>
-              <v-icon
-                :style="{color: task ? this.$vuetify.theme.primary : 'gray'}"
-                @click="addTask"
-              >add_circle</v-icon>
-            </v-btn>
-          </template>
-        </v-text-field>
+        <todo-input>
+        </todo-input>
       </v-bottom-sheet>
     </v-layout>
   </v-container>
 </template>
 
 <script>
+import todoInput from './todoInput';
+import { eventBus } from '../main';
+
 export default {
-  data: () => ({
-    sheet: false,
-    dialog: false,
-    task: '',
-    date: null
-  }),
-  methods: {
-    addTask: function () {
-      this.task = '';
-      this.date = null
+  components: {
+    todoInput
+  },
+  props: ['tab'],
+  data() {
+    return {
+      sheet: false,
+      fab: true
+    }
+  },
+  created() {
+    let self = this
+    eventBus.$on('fabOn', function () {
+      self.fab = true;
+    });
+    eventBus.$on('fabOff', function () {
+      self.fab = false;
+    });
+    // eventBus.$on('sheetOn', function () {
+    //   self.sheet = true;
+    // });
+    eventBus.$on('sheetOff', function () {
+      self.sheet = false;
+    });
+  },
+  watch: {
+    tab: function () {
+      this.sheet = false;
     }
   }
 }

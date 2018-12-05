@@ -37,15 +37,15 @@
     </v-toolbar>
 
     <v-content>
-      <show-core :tab="tab" :tabItems="tabItems"></show-core>
-      <add-core></add-core>
+      <show-core :tab="tab" tabItems="tabItems"></show-core>
+      <add-core :tab="tab"></add-core>
     </v-content>
   </v-app>
 </template>
 
 <script>
-  import showCore from './components/showCore'
-  import addCore from './components/addCore'
+import showCore from './components/showCore'
+import addCore from './components/addCore'
 
 export default {
   components: {
